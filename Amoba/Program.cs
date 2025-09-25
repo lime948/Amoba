@@ -13,7 +13,7 @@ namespace Amoba
         static void Main(string[] args)
         {
             Console.Title = "Amőba játék";
-            string[,] board = new string[3, 3];
+            string[,] board = new string[99, 99];
             byte turn = 0;
             string empty = "e";
 
@@ -75,7 +75,7 @@ namespace Amoba
                 else
                 {
                     board[row, col] = $"{player} ";
-                    turn++;
+                    turn += 1;
                     Console.Clear();
                     GameLoop();
                 }
