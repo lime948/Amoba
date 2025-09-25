@@ -11,7 +11,6 @@ namespace Amoba
         static int games = 0;
         static void Main(string[] args)
         {
-            
             Console.WriteLine("=== AMŐBA ===");
             GameLoop();
             Display();
@@ -62,7 +61,7 @@ namespace Amoba
 
         static void Winconditions()
         {
-            //nyerés és vsztés után games += 1;
+            //nyerés és vsztés után games++;
         }
     }
 }
