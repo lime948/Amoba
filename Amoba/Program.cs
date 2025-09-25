@@ -14,6 +14,8 @@ namespace Amoba
         {
             Console.Title = "Amőba játék";
             string[,] board = new string[10, 10];
+            byte row;
+            byte col;
             byte turn = 0;
             string empty = "e";
 
@@ -53,11 +55,18 @@ namespace Amoba
                 char player = (turn % 2 == 0 ? 'X' : 'O');
                 Console.WriteLine($"Következő játékos: {player}");
 
-                // Pozíciók bekérése
-                Console.Write($"Add meg a sor számát (1-{board.GetLength(0)}): ");
-                byte row = (Byte)(Convert.ToInt32(Console.ReadLine()) - 1);
-                Console.Write($"Add meg az oszlop számát (1-{board.GetLength(1)}): ");
-                byte col = (Byte)(Convert.ToInt32(Console.ReadLine()) - 1);
+                // Pozíciók bekérése, Try-Catch hogy ne crasheljen a program
+                try
+                {
+                    Console.Write($"Add meg a sor számát (1-{board.GetLength(0)}): ");
+                    row = (Byte)(Convert.ToInt32(Console.ReadLine()) - 1);
+                    Console.Write($"Add meg az oszlop számát (1-{board.GetLength(1)}): ");
+                    col = (Byte)(Convert.ToInt32(Console.ReadLine()) - 1);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("A koordináta csak szám lehet!");
+                }
 
                 // Koordináták ellenőrzése
                 if (row < 0 || row > board.GetLength(0)-1 || col < 0 || col > board.GetLength(1) - 1)
