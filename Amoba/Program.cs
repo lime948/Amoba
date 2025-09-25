@@ -13,7 +13,7 @@ namespace Amoba
         static void Main(string[] args)
         {
             Console.Title = "Amőba játék";
-            string[,] board = new string[99, 99];
+            string[,] board = new string[10, 10];
             byte turn = 0;
             string empty = "e";
 
@@ -54,9 +54,9 @@ namespace Amoba
                 Console.WriteLine($"Következő játékos: {player}");
 
                 // Pozíciók bekérése
-                Console.Write("Add meg a sor számát (1-10): ");
+                Console.Write($"Add meg a sor számát (1-{board.GetLength(0)}): ");
                 byte row = (Byte)(Convert.ToInt32(Console.ReadLine()) - 1);
-                Console.Write("Add meg az oszlop számát (1-10): ");
+                Console.Write($"Add meg az oszlop számát (1-{board.GetLength(1)}): ");
                 byte col = (Byte)(Convert.ToInt32(Console.ReadLine()) - 1);
 
                 // Koordináták ellenőrzése
@@ -75,7 +75,7 @@ namespace Amoba
                 else
                 {
                     board[row, col] = $"{player} ";
-                    turn += 1;
+                    turn++;
                     Console.Clear();
                     GameLoop();
                 }

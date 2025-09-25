@@ -1,0 +1,7 @@
+C:\Users\KeriAM\Documents\Visual Studio 2022\AmobaClone\Amoba\bin\Debug\Amoba.exe.config
+C:\Users\KeriAM\Documents\Visual Studio 2022\AmobaClone\Amoba\bin\Debug\Amoba.exe
+C:\Users\KeriAM\Documents\Visual Studio 2022\AmobaClone\Amoba\bin\Debug\Amoba.pdb
+C:\Users\KeriAM\Documents\Visual Studio 2022\AmobaClone\Amoba\obj\Debug\Amoba.csproj.AssemblyReference.cache
+C:\Users\KeriAM\Documents\Visual Studio 2022\AmobaClone\Amoba\obj\Debug\Amoba.csproj.CoreCompileInputs.cache
+C:\Users\KeriAM\Documents\Visual Studio 2022\AmobaClone\Amoba\obj\Debug\Amoba.exe
+C:\Users\KeriAM\Documents\Visual Studio 2022\AmobaClone\Amoba\obj\Debug\Amoba.pdb
