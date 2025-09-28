@@ -18,6 +18,7 @@ namespace Amoba
             byte col = 0;
             byte turn = 0;
             string empty = "e";
+            bool success = false;
 
             // Tábla feltöltése
             for (int i = 0; i < board.GetLength(0); i++)
@@ -56,25 +57,38 @@ namespace Amoba
                 Console.WriteLine($"Következő játékos: {player}");
 
                 // Pozíciók bekérése, Try-Catch hogy ne crasheljen a program
-                Console.Write($"Add meg a sor számát (1-{board.GetLength(0)}): ");
-                try
+                do
                 {
-                    row = (Byte)(Convert.ToInt32(Console.ReadLine()) - 1);
+                    success = false;
+                    Console.Write($"Add meg a sor számát (1-{board.GetLength(0)}): ");
+                    try
+                    {
+                        row = (Byte)(Convert.ToInt32(Console.ReadLine()) - 1);
+                        success = Byte.TryParse(row.ToString(), out row);
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("A koordináta csak szám lehet!");
+                    }
                 }
-                catch (Exception)
-                {
-                    Console.WriteLine("A koordináta csak szám lehet!");
-                }
+                while (!success);
 
-                Console.Write($"Add meg az oszlop számát (1-{board.GetLength(1)}): ");
-                try
+                do
                 {
-                    col = (Byte)(Convert.ToInt32(Console.ReadLine()) - 1);
+                    success = false;
+                    Console.Write($"Add meg az oszlop számát (1-{board.GetLength(1)}): ");
+                    try
+                    {
+                        col = (Byte)(Convert.ToInt32(Console.ReadLine()) - 1);
+                        success = Byte.TryParse(col.ToString(), out col);
+
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("A koordináta csak szám lehet!");
+                    }
                 }
-                catch (Exception)
-                {
-                    Console.WriteLine("A koordináta csak szám lehet!");
-                }
+                while (!success);
 
                 // Koordináták ellenőrzése
                 if (row < 0 || row > board.GetLength(0)-1 || col < 0 || col > board.GetLength(1) - 1)
@@ -91,7 +105,7 @@ namespace Amoba
                 }
                 else
                 {
-                    board[row, col] = $"{player} ";
+                    board[row, col] = $"{player}";
                     turn++;
                     Console.Clear();
                     GameLoop();
