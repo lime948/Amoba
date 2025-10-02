@@ -152,30 +152,27 @@ namespace Amoba
                     Console.Write("───┐");
                     Console.Write($"\n");
                     // Tábla kiírása
-                    for (int i = 1; i < board.GetLength(0); i++)
+                    for (int i = 0; i < board.GetLength(0); i++)
                     {
                         Console.Write("│");
                         for (int j = 0; j < board.GetLength(1); j++)
                         {
                             Console.Write($"{board[i, j]}");
-                            Console.Write("  │");
+                                Console.Write("  │");
                         }
                         //"─, │, ┌, ┐, └, ┘, ├, ┤, ┬, ┴, ┼"
-                        Console.Write($"\n");
-                        Console.Write("├");
-                        for (int k = 1; k <= board.GetLength(0) - 1; k++)
+                        if (i < board.GetLength(0) - 1)
                         {
-                            Console.Write("───┼");
-                        }
-                        Console.Write("───┤");
+                            Console.Write($"\n");
+                            Console.Write("├");
+                            for (int k = 1; k <= board.GetLength(0) - 1; k++)
+                            {
+                                Console.Write("───┼");
+                            }
+                            Console.Write("───┤");
+                        }          
                         Console.WriteLine();
                     }
-                    Console.Write("│");
-                    for (int k = 0; k <= board.GetLength(1) - 1; k++)
-                    {
-                        Console.Write("   │");
-                    }
-                    Console.Write("\n");
                     Console.Write("└");
                     for (int k = 0; k < board.GetLength(0) - 1; k++)
                     {
