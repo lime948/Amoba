@@ -43,7 +43,7 @@ namespace Amoba
 
             if (!FreeSpace())
             {
-                Console.WriteLine("Nincs több üres mező! Döntetlen!");
+                WriteCentered("Nincs több üres mező! Döntetlen!");
                 // Enterrel restart
             }
 
@@ -54,12 +54,13 @@ namespace Amoba
                 // Játékosváltás
                 Console.WriteLine();
                 char player = (turn % 2 == 0 ? 'X' : 'O');
-                Console.WriteLine($"Következő játékos: {player}");
+                WriteCentered($"Következő játékos: {player}");
 
                 // Pozíciók bekérése, Try-Catch hogy ne crasheljen a program
                 do
                 {
-                    Console.Write($"Add meg a sor számát (1-{board.GetLength(0)}): ");
+                    WriteCentered($"Add meg a sor számát (1-{board.GetLength(0)}): ");
+                    Console.CursorLeft = (Console.WindowWidth / 2);
                     try
                     {
                         row = (Byte)(Convert.ToInt32(Console.ReadLine()) - 1);
@@ -67,14 +68,15 @@ namespace Amoba
                     }
                     catch (Exception)
                     {
-                        Console.WriteLine("A koordináta csak szám lehet!");
+                        WriteCentered("A koordináta csak szám lehet!");
                     }
                 }
                 while (!success);
 
                 do
                 {
-                    Console.Write($"Add meg az oszlop számát (1-{board.GetLength(1)}): ");
+                    WriteCentered($"Add meg az oszlop számát (1-{board.GetLength(1)}): ");
+                    Console.CursorLeft = (Console.WindowWidth / 2);
                     try
                     {
                         col = (Byte)(Convert.ToInt32(Console.ReadLine()) - 1);
@@ -83,7 +85,7 @@ namespace Amoba
                     }
                     catch (Exception)
                     {
-                        Console.WriteLine("A koordináta csak szám lehet!");
+                        WriteCentered("A koordináta csak szám lehet!");
                     }
                 }
                 while (!success);
@@ -92,12 +94,12 @@ namespace Amoba
                 if (row < 0 || row > board.GetLength(0) - 1 || col < 0 || col > board.GetLength(1) - 1)
                 {
                     Console.Clear();
-                    Console.WriteLine("Hibás koordináta! Próbáld újra.");
+                    WriteCentered("Hibás koordináta! Próbáld újra.");
                 }
                 else if (board[row, col] != empty)
                 {
                     Console.Clear();
-                    Console.WriteLine("Ez a mező már foglalt! Próbáld újra.");
+                    WriteCentered("Ez a mező már foglalt! Próbáld újra.");
                 }
                 else
                 {
@@ -111,7 +113,7 @@ namespace Amoba
                     {
                         Console.Clear();
                         DrawBoard();
-                        Console.WriteLine($"Gratulálok {player}, nyertél!");
+                        WriteCentered($"Gratulálok {player}, nyertél!");
                         // Enterrel restart
                     }
                 }
@@ -119,7 +121,7 @@ namespace Amoba
                 void DrawBoard()
                 // Tábla kirajzolása (Zétény írta ezt a részt, én csak egy szóközt mozgattam)
                 {
-                    Console.Clear();
+                                    Console.Clear();
                     Console.Write("┌");
                     for (int k = 0; k < board.GetLength(0) - 1; k++)
                     {
@@ -234,7 +236,7 @@ namespace Amoba
             {
                 Console.Clear();
                 Console.ResetColor();
-                Console.WriteLine("Kérem válasszon táblaméretet: ");
+                WriteCentered("Kérem válasszon táblaméretet: ");
 
                 if (selector == 0)
                 {
@@ -244,7 +246,7 @@ namespace Amoba
                 {
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                Console.WriteLine("10x10");
+                WriteCentered("10x10");
 
                 if (selector == 1)
                 {
@@ -254,7 +256,7 @@ namespace Amoba
                 {
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                Console.WriteLine("11x11");
+                WriteCentered("11x11");
 
                 if (selector == 2)
                 {
@@ -264,7 +266,7 @@ namespace Amoba
                 {
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                Console.WriteLine("12x12");
+                WriteCentered("12x12");
 
                 if (selector == 3)
                 {
@@ -274,7 +276,7 @@ namespace Amoba
                 {
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                Console.WriteLine("13x13");
+                WriteCentered("13x13");
 
                 if (selector == 4)
                 {
@@ -284,7 +286,7 @@ namespace Amoba
                 {
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                Console.WriteLine("14x14");
+                WriteCentered("14x14");
 
                 if (selector == 5)
                 {
@@ -294,7 +296,7 @@ namespace Amoba
                 {
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                Console.WriteLine("15x15");
+                WriteCentered("15x15");
 
                 if (selector == 6)
                 {
@@ -304,7 +306,8 @@ namespace Amoba
                 {
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                Console.WriteLine("Random (a fentebbiek közül)");
+                WriteCentered("Random (a fentebbiek közül)");
+                Console.CursorLeft = (Console.WindowWidth / 2);
 
                 switch (Console.ReadKey().Key)
                 {
@@ -352,6 +355,14 @@ namespace Amoba
                         break;
                 }
             }
+        }
+
+        static void WriteCentered(string text)
+        {
+            int width = Console.WindowWidth;
+            int leftPadding = (width - text.Length) / 2;
+            if (leftPadding < 0) leftPadding = 0;
+            Console.WriteLine(new string(' ', leftPadding) + text);
         }
     }
 }
