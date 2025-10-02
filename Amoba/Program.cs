@@ -117,8 +117,9 @@ namespace Amoba
                 }
 
                 void DrawBoard()
-                // Tábla kirajzolása (Zétény írta ezt a részt, én csak egy szóközzel hotfixeltem)
+                // Tábla kirajzolása (Zétény írta ezt a részt, én csak egy szóközt mozgattam)
                 {
+                    Console.Clear();
                     Console.Write("┌");
                     for (int k = 0; k < board.GetLength(0) - 1; k++)
                     {
