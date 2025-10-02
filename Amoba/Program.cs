@@ -34,6 +34,7 @@ namespace Amoba
             void Replay()
             {
                 WriteCentered("Szeretnéd újra játszani? (I/N)");
+                Console.CursorLeft = (Console.WindowWidth / 2);
                 string input = Console.ReadLine().ToUpper();
                 if (input == "I")
                 {
@@ -86,6 +87,7 @@ namespace Amoba
                 do
                 {
                     WriteCentered($"Add meg a sor számát (1-{board.GetLength(0)}): ");
+                    Console.CursorLeft = (Console.WindowWidth / 2);
                     try
                     {
                         row = (Byte)(Convert.ToInt32(Console.ReadLine()) - 1);
@@ -101,6 +103,7 @@ namespace Amoba
                 do
                 {
                     WriteCentered($"Add meg az oszlop számát (1-{board.GetLength(1)}): ");
+                    Console.CursorLeft = (Console.WindowWidth / 2);
                     try
                     {
                         col = (Byte)(Convert.ToInt32(Console.ReadLine()) - 1);
@@ -137,6 +140,7 @@ namespace Amoba
                     {
                         Console.Clear();
                         DrawBoard();
+                        Console.Write($"\n");
                         WriteCentered($"Gratulálok {player}, nyertél!");
                         Replay();
                     }
@@ -260,6 +264,5 @@ namespace Amoba
             if (leftPadding < 0) leftPadding = 0;
             Console.WriteLine(new string(' ', leftPadding) + text);
         }
-
     }
 }
