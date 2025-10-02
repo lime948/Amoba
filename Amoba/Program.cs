@@ -113,12 +113,26 @@ namespace Amoba
 
                 void DrawBoard()
                 {
-                    // Tábla kiírása
+                    // Tábla kiírása (Zétény kódja alapján)
+                    Console.Write("+");
+                    for (int k = 0; k < board.GetLength(0); k++)
+                    {
+                        Console.Write("---+");
+                    }
+                    Console.Write($"\n");
                     for (int i = 0; i < board.GetLength(0); i++)
                     {
+                        Console.Write("| ");
                         for (int j = 0; j < board.GetLength(1); j++)
                         {
-                            Console.Write($"{board[i, j]} ");
+                            Console.Write($"{board[i, j]}");
+                            Console.Write(" | ");
+                        }
+                        Console.Write($"\n");
+                        Console.Write("+");
+                        for (int k = 0; k < board.GetLength(0); k++)
+                        {
+                            Console.Write("---+");
                         }
                         Console.WriteLine();
                     }
