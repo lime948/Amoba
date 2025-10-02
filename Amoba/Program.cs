@@ -20,6 +20,7 @@ namespace Amoba
             byte turn = 0;
             string empty = " ";
             bool success = false;
+            WriteCentered("=== Amőba ===");
 
             // Tábla feltöltése, ez csak a legelején fut le egyszer
             for (int i = 0; i < board.GetLength(0); i++)
@@ -78,6 +79,7 @@ namespace Amoba
 
                 // Játékosváltás
                 char player = (turn % 2 == 0 ? 'X' : 'O');
+                Console.Write("\n");
                 WriteCentered($"Következő játékos: {player}");
 
                 // Pozíciók bekérése, Try-Catch hogy ne crasheljen a program
@@ -142,29 +144,44 @@ namespace Amoba
 
                 void DrawBoard()
                 {
-                    Console.Write("+");
-                    for (int k = 0; k < board.GetLength(0); k++)
+                    Console.Write("┌");
+                    for (int k = 0; k < board.GetLength(0) - 1; k++)
                     {
-                        Console.Write("-+");
+                        Console.Write("───┬");
                     }
+                    Console.Write("───┐");
                     Console.Write($"\n");
                     // Tábla kiírása
-                    for (int i = 0; i < board.GetLength(0); i++)
+                    for (int i = 1; i < board.GetLength(0); i++)
                     {
-                        Console.Write("|");
+                        Console.Write("│");
                         for (int j = 0; j < board.GetLength(1); j++)
                         {
                             Console.Write($"{board[i, j]}");
-                            Console.Write("|");
+                            Console.Write("  │");
                         }
+                        //"─, │, ┌, ┐, └, ┘, ├, ┤, ┬, ┴, ┼"
                         Console.Write($"\n");
-                        Console.Write("+");
-                        for (int k = 0; k < board.GetLength(0); k++)
+                        Console.Write("├");
+                        for (int k = 1; k <= board.GetLength(0) - 1; k++)
                         {
-                            Console.Write("-+");
+                            Console.Write("───┼");
                         }
+                        Console.Write("───┤");
                         Console.WriteLine();
                     }
+                    Console.Write("│");
+                    for (int k = 0; k <= board.GetLength(1) - 1; k++)
+                    {
+                        Console.Write("   │");
+                    }
+                    Console.Write("\n");
+                    Console.Write("└");
+                    for (int k = 0; k < board.GetLength(0) - 1; k++)
+                    {
+                        Console.Write("───┴");
+                    }
+                    Console.Write("───┘");
                 }
             }
 
