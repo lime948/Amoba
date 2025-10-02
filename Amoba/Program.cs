@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Media;
+using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,12 +15,22 @@ namespace Amoba
         {
             // Változók deklarálása
             Console.Title = "Amőba";
-            string[,] board = new string[10, 10];
+            byte boardSize = 0;
             byte row = 0;
             byte col = 0;
             byte turn = 0;
             string empty = "e";
             bool success = false;
+            byte selector = 0;
+            bool selected = false;
+
+            // Nehézség bekérése
+            do
+            {
+                Difficulty();
+            } while (!selected);
+
+            string[,] board = new string[boardSize, boardSize];
 
             // Tábla feltöltése, ez csak a legelején fut le egyszer
             for (int i = 0; i < board.GetLength(0); i++)
@@ -114,6 +125,7 @@ namespace Amoba
                 void DrawBoard()
                 {
                     // Tábla kiírása (Zétény kódja alapján)
+                    Console.Clear();
                     Console.Write("+");
                     for (int k = 0; k < board.GetLength(0); k++)
                     {
@@ -208,6 +220,130 @@ namespace Amoba
                     }
                 }
                 return true;
+            }
+
+            void Difficulty()
+            // Nehézség, ez csak a tábla mérete
+            {
+                Console.Clear();
+                Console.ResetColor();
+                Console.WriteLine("Kérem válasszon táblaméretet: ");
+
+                if (selector == 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                Console.WriteLine("10x10");
+
+                if (selector == 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                Console.WriteLine("11x11");
+
+                if (selector == 2)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                Console.WriteLine("12x12");
+
+                if (selector == 3)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                Console.WriteLine("13x13");
+
+                if (selector == 4)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                Console.WriteLine("14x14");
+
+                if (selector == 5)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                Console.WriteLine("15x15");
+
+                if (selector == 6)
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                Console.WriteLine("Random (a fentebbiek közül)");
+
+                switch (Console.ReadKey().Key)
+                {
+                    case ConsoleKey.Enter:
+                        selected = true;
+                        break;
+                    case ConsoleKey.UpArrow:
+                        if (selector > 0)
+                        {
+                            selector -= 1;
+                        }
+                        break;
+                    case ConsoleKey.DownArrow:
+                        if (selector < 6)
+                        {
+                            selector += 1;
+                        }
+                        break;
+                }
+
+                switch (selector)
+                {
+                    case 0:
+                        boardSize = 10;
+                        break;
+                    case 1:
+                        boardSize = 11;
+                        break;
+                    case 2:
+                        boardSize = 12;
+                        break;
+                    case 3:
+                        boardSize = 13;
+                        break;
+                    case 4:
+                        boardSize = 14;
+                        break;
+                    case 5:
+                        boardSize = 15;
+                        break;
+                    case 6:
+                        Random randomSize = new Random();
+                        boardSize = (byte)randomSize.Next(10, 16);
+                        Console.ResetColor();
+                        break;
+                }
             }
         }
     }
