@@ -1,10 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Media;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Amoba
 {
@@ -14,13 +9,22 @@ namespace Amoba
         {
             // Változók deklarálása
             Console.Title = "Amőba";
-            string[,] board = new string[10, 10];
+            byte boardSize = 0;
             byte row = 0;
             byte col = 0;
             byte turn = 0;
             string empty = " ";
             bool success = false;
-            WriteCentered("=== Amőba ===");
+            byte selector = 0;
+            bool selected = false;
+
+            // Nehézség bekérése
+            do
+            {
+                Difficulty();
+            } while (!selected);
+
+            string[,] board = new string[boardSize, boardSize];
 
             // Tábla feltöltése, ez csak a legelején fut le egyszer
             for (int i = 0; i < board.GetLength(0); i++)
@@ -28,36 +32,6 @@ namespace Amoba
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
                     board[i, j] = empty;
-                }
-            }
-
-            void Replay()
-            {
-                WriteCentered("Szeretnéd újra játszani? (I/N)");
-                Console.CursorLeft = (Console.WindowWidth / 2);
-                string input = Console.ReadLine().ToUpper();
-                if (input == "I")
-                {
-                    Console.Clear();
-                    // Tábla újrafeltöltése
-                    for (int i = 0; i < board.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < board.GetLength(1); j++)
-                        {
-                            board[i, j] = empty;
-                        }
-                    }
-                    turn = 0;
-                    GameLoop();
-                }
-                else if (input == "N")
-                {
-                    Environment.Exit(0);
-                }
-                else
-                {
-                    WriteCentered("Hibás válasz! Kérlek, válaszolj I vagy N betűvel.");
-                    Replay();
                 }
             }
 
@@ -79,8 +53,8 @@ namespace Amoba
                 DrawBoard();
 
                 // Játékosváltás
+                Console.WriteLine();
                 char player = (turn % 2 == 0 ? 'X' : 'O');
-                Console.Write("\n");
                 WriteCentered($"Következő játékos: {player}");
 
                 // Pozíciók bekérése, Try-Catch hogy ne crasheljen a program
@@ -140,49 +114,53 @@ namespace Amoba
                     {
                         Console.Clear();
                         DrawBoard();
-                        Console.Write($"\n");
+                        Console.WriteLine();
                         WriteCentered($"Gratulálok {player}, nyertél!");
-                        Replay();
+                        // Enterrel restart
                     }
                 }
 
                 void DrawBoard()
                 {
-                    Console.Write("┌");
+                    var lines = new List<string>();
+
+                    // Top border
+                    var top = "┌";
                     for (int k = 0; k < board.GetLength(0) - 1; k++)
-                    {
-                        Console.Write("───┬");
-                    }
-                    Console.Write("───┐");
-                    Console.Write($"\n");
-                    // Tábla kiírása
+                        top += "───┬";
+                    top += "───┐";
+                    lines.Add(top);
+
+                    // Board rows
                     for (int i = 0; i < board.GetLength(0); i++)
                     {
-                        Console.Write("│");
+                        var rows = "│";
                         for (int j = 0; j < board.GetLength(1); j++)
                         {
-                            Console.Write($"{board[i, j]}");
-                                Console.Write("  │");
+                            rows += $"{board[i, j]}  │";
                         }
-                        //"─, │, ┌, ┐, └, ┘, ├, ┤, ┬, ┴, ┼"
+                        lines.Add(rows);
+
                         if (i < board.GetLength(0) - 1)
                         {
-                            Console.Write($"\n");
-                            Console.Write("├");
+                            var mid = "├";
                             for (int k = 1; k <= board.GetLength(0) - 1; k++)
-                            {
-                                Console.Write("───┼");
-                            }
-                            Console.Write("───┤");
-                        }          
-                        Console.WriteLine();
+                                mid += "───┼";
+                            mid += "───┤";
+                            lines.Add(mid);
+                        }
                     }
-                    Console.Write("└");
+
+                    // Bottom border
+                    var bottom = "└";
                     for (int k = 0; k < board.GetLength(0) - 1; k++)
-                    {
-                        Console.Write("───┴");
-                    }
-                    Console.Write("───┘");
+                        bottom += "───┴";
+                    bottom += "───┘";
+                    lines.Add(bottom);
+
+                    // Print each line centered
+                    foreach (var line in lines)
+                        WriteCentered(line);
                 }
             }
 
@@ -256,7 +234,134 @@ namespace Amoba
                 }
                 return true;
             }
+
+            void Difficulty()
+            // Nehézség, ez csak a tábla mérete
+            {
+                Console.Clear();
+                Console.ResetColor();
+                WriteCentered("=== Amőba ===");
+                WriteCentered("Kérem válasszon táblaméretet: ");
+
+                if (selector == 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                WriteCentered("10x10");
+
+                if (selector == 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                WriteCentered("11x11");
+
+                if (selector == 2)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                WriteCentered("12x12");
+
+                if (selector == 3)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                WriteCentered("13x13");
+
+                if (selector == 4)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                WriteCentered("14x14");
+
+                if (selector == 5)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                WriteCentered("15x15");
+
+                if (selector == 6)
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                WriteCentered("Random (a fentebbiek közül)");
+                Console.CursorLeft = (Console.WindowWidth / 2);
+
+                switch (Console.ReadKey().Key)
+                {
+                    case ConsoleKey.Enter:
+                        selected = true;
+                        break;
+                    case ConsoleKey.UpArrow:
+                        if (selector > 0)
+                        {
+                            selector -= 1;
+                        }
+                        break;
+                    case ConsoleKey.DownArrow:
+                        if (selector < 6)
+                        {
+                            selector += 1;
+                        }
+                        break;
+                }
+
+                switch (selector)
+                {
+                    case 0:
+                        boardSize = 10;
+                        break;
+                    case 1:
+                        boardSize = 11;
+                        break;
+                    case 2:
+                        boardSize = 12;
+                        break;
+                    case 3:
+                        boardSize = 13;
+                        break;
+                    case 4:
+                        boardSize = 14;
+                        break;
+                    case 5:
+                        boardSize = 15;
+                        break;
+                    case 6:
+                        Random randomSize = new Random();
+                        boardSize = (byte)randomSize.Next(10, 16);
+                        Console.ResetColor();
+                        break;
+                }
+            }
         }
+
         static void WriteCentered(string text)
         {
             int width = Console.WindowWidth;
