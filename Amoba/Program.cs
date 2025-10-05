@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Amoba
 {
@@ -16,6 +17,7 @@ namespace Amoba
             bool success = false;
             byte selector = 0;
             bool selected = false;
+            string[,] board;
 
             // Nehézség bekérése
             do
@@ -23,16 +25,8 @@ namespace Amoba
                 Difficulty();
             } while (!selected);
 
-            string[,] board = new string[boardSize, boardSize];
 
-            // Tábla feltöltése, ez csak a legelején fut le egyszer
-            for (int i = 0; i < board.GetLength(0); i++)
-            {
-                for (int j = 0; j < board.GetLength(1); j++)
-                {
-                    board[i, j] = empty;
-                }
-            }
+            FillBoard();
 
             // Fő játékciklus
             do
@@ -44,7 +38,52 @@ namespace Amoba
             if (!FreeSpace())
             {
                 WriteCentered("Nincs több üres mező! Döntetlen!");
-                // Enterrel restart
+                Replay();
+            }
+
+            void Replay()
+            {
+                string input;
+                WriteCentered("Szeretnéd újra játszani? (I/N)");
+                do
+                {
+                    Console.CursorLeft = (Console.WindowWidth / 2);
+                    input = Console.ReadLine().ToUpper();
+                    if (input == "I")
+                    {
+                        turn = 0;
+                        selector = 0;
+                        selected = false;
+                        Console.Clear();
+                        do
+                        {
+                            Difficulty();
+                        } while (!selected);
+                        FillBoard();
+                        GameLoop();
+                    }
+                    else if (input == "N")
+                    {
+                        Environment.Exit(0);
+                    }
+                    else
+                    {
+                        WriteCentered("Hibás válasz! Kérlek, válaszolj I vagy N betűvel.");
+                    }
+                } while (input != "I"); // Ha Input = N akkor amúgyis kilép
+            }
+
+            void FillBoard()
+            // Tábla feltöltése
+            {
+                board = new string[boardSize, boardSize];
+                for (int i = 0; i < board.GetLength(0); i++)
+                {
+                    for (int j = 0; j < board.GetLength(1); j++)
+                    {
+                        board[i, j] = empty;
+                    }
+                }
             }
 
             void GameLoop()
@@ -115,49 +154,53 @@ namespace Amoba
                         DrawBoard();
                         Console.WriteLine();
                         WriteCentered($"Gratulálok {player}, nyertél!");
-                        // Enterrel restart
+                        Replay();
                     }
                 }
 
                 void DrawBoard()
                 // Tábla kirajzolása (Zétény írta ezt a részt, én csak egy szóközt mozgattam)
                 {
-                                    Console.Clear();
-                    Console.Write("┌");
+                    Console.Clear();
+                    var lines = new List<string>();
+
+                    // Top border
+                    var top = "┌";
                     for (int k = 0; k < board.GetLength(0) - 1; k++)
-                    {
-                        Console.Write("───┬");
-                    }
-                    Console.Write("───┐");
-                    Console.Write($"\n");
-                    // Tábla kiírása
+                        top += "───┬";
+                    top += "───┐";
+                    lines.Add(top);
+
+                    // Board rows
                     for (int i = 0; i < board.GetLength(0); i++)
                     {
-                        Console.Write("│");
+                        var rows = "│";
                         for (int j = 0; j < board.GetLength(1); j++)
                         {
-                            Console.Write($" {board[i, j]}");
-                            Console.Write(" │");
+                            rows += $" {board[i, j]} │";
                         }
-                        //"─, │, ┌, ┐, └, ┘, ├, ┤, ┬, ┴, ┼"
+                        lines.Add(rows);
+
                         if (i < board.GetLength(0) - 1)
                         {
-                            Console.Write($"\n");
-                            Console.Write("├");
+                            var mid = "├";
                             for (int k = 1; k <= board.GetLength(0) - 1; k++)
-                            {
-                                Console.Write("───┼");
-                            }
-                            Console.Write("───┤");
+                                mid += "───┼";
+                            mid += "───┤";
+                            lines.Add(mid);
                         }
-                        Console.WriteLine();
                     }
-                    Console.Write("└");
+
+                    // Bottom border
+                    var bottom = "└";
                     for (int k = 0; k < board.GetLength(0) - 1; k++)
-                    {
-                        Console.Write("───┴");
-                    }
-                    Console.Write("───┘");
+                        bottom += "───┴";
+                    bottom += "───┘";
+                    lines.Add(bottom);
+
+                    // Print each line centered
+                    foreach (var line in lines)
+                        WriteCentered(line);
                 }
             }
 
@@ -359,6 +402,7 @@ namespace Amoba
         }
 
         static void WriteCentered(string text)
+        // Középre írás
         {
             int width = Console.WindowWidth;
             int leftPadding = (width - text.Length) / 2;
