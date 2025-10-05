@@ -113,6 +113,7 @@ namespace Amoba
                     {
                         Console.Clear();
                         DrawBoard();
+                        Console.WriteLine();
                         WriteCentered($"Gratulálok {player}, nyertél!");
                         // Enterrel restart
                     }
